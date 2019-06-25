@@ -11,7 +11,9 @@ import com.control.page.entity.Member;
 import com.control.page.service.LogService;
 import com.control.page.util.Util;
 import org.apache.shiro.SecurityUtils;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -61,6 +63,11 @@ public class LogAop {
         // 创建一个日志对象(准备记录日志)
         Log log = new Log();
         Object result = null;
+
+
+        result = pjp.proceed();
+
+
         String account = SecurityUtils.getSubject().getPrincipal().toString();
         if( account != null ){
             Member member =  memberDao.getMemberByAccount(account);
@@ -74,13 +81,15 @@ public class LogAop {
 
                 log.setUri(request.getRequestURI());
                 log.setRemark(operateType +" Param: "+ JSONObject.toJSON(request.getParameterMap()).toString());//操作说明
+                if("/login".equals(request.getRequestURI())){
+                    log.setRemark(operateType );//操作说明
+                }
+
                 log.setOperatorIp(Util.getIpAddr(request));
                 //让代理方法执行
-                result = pjp.proceed();
                 int resultDb =  logService.insertLog(log);
             }
         }
-
         return result;
     }
 }

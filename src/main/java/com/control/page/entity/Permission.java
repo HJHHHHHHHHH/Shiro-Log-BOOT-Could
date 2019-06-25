@@ -1,6 +1,8 @@
 package com.control.page.entity;
 
 
+import java.util.List;
+
 public class Permission {
     private long id;
     private String permissionName;
@@ -8,6 +10,7 @@ public class Permission {
     private String url;
     private long parentid;
     private int type;
+    private List<Permission> permissionList;
 
     public long getId() {
         return id;
@@ -56,5 +59,13 @@ public class Permission {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public List<Permission> getPermissionList() {
+        return permissionList;
+    }
+
+    public void setPermissionList(List<Permission> permissionList) {
+        this.permissionList = permissionList;
     }
 }

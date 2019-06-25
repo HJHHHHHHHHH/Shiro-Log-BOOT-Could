@@ -9,8 +9,13 @@ public class ShiroFilterMapFactory {
 //		设置路径映射，注意这里要用LinkedHashMap 保证有序
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/logout", "logout");
+        filterChainDefinitionMap.put("/logout", "anon");
 
+
+        //不拦截vue
+       // filterChainDefinitionMap.put("/vue-admin/index.html", "anon");
+        filterChainDefinitionMap.put("/vue-admin/**", "anon");//index.html#/login
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
 
         //不拦截swagger
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
